@@ -7,7 +7,7 @@ import time
 class SCPI(object):
 
     #Socket info
-    HOST = '192.168.1.14'
+    HOST = None
     PORT = 5000
     TIME_OUT = None
     #SCPI delimiter
@@ -57,7 +57,7 @@ class SCPI(object):
         self._socket = None
 
 
-rp_s = SCPI('192.168.1.14', None)
+rp_s = SCPI('IP', None)
 time_out = 1#seconds
 diode = 5
 

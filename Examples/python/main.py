@@ -3,7 +3,7 @@ __author__ = 'infused'
 
 import scpi
 
-host = '192.168.178.56'
+host = '192.168.1.14'
 
 rp_s = scpi.SCPI(host, None)
 

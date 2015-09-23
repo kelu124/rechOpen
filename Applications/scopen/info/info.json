@@ -1,0 +1,6 @@
+{
+    "name": "Oscilloscope test echOpen",
+    "version": "0.01",
+    "revision": "Test pour echopen",
+    "description": "A two channel time domain signal visualization system pour echOpen :)"
+}
