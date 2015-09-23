@@ -1,0 +1,57 @@
+How to connect using Ethernet Cable:
+
+Connect Ethernet cable from PC Port to redpitaya. In the network settings, there will be this "Unidentified" wired network.
+Go to Properties->IPv4 Configuration.
+Set the following:
+Static IP: 192.168.1.101
+Netmask: 255.255.255.0
+
+Save and exit.
+
+Go to browser and type 192.168.1.100
+
+Now you can work with the apps!
+
+
+
+Signal Generate:
+
+redpitaya> generate
+generate version 0.90-299-1278
+
+Usage: generate   channel amplitude frequency <type>
+
+       channel     Channel to generate signal on [1, 2].
+       amplitude   Peak-to-peak signal amplitude in Vpp [0.0 - 2.0].
+       frequency   Signal frequency in Hz [0.0 - 6.2e+07].
+       type        Signal type [sine, sqr, tri].
+
+
+
+
+
+
+Signal Acquire:
+
+redpitaya> acquire 
+acquire version 0.90-299-1278
+
+Usage: acquire  size <dec>
+
+       size     Number of samples to acquire [0 - 16384].
+       dec      Decimation [1,8,64,1024,8192,65536] (default=1).
+
+Data save on SD:
+
+redpitaya> acquire 1024 8 > /mnt/my_remote_file
+
+Data retrieve from SD with WinSCP.
+Default IP address: 192.168.1.100
+Default Netmask: 255.255.255.0
+
+NB: Commands are similar for SSH and Serial console like acquire and generate work well on both.
+
+
+
+HOW TO USE AS GAIN/PHASE/IMPEDANCE ANALYSER
+http://blog.redpitaya.com/?p=501

@@ -1,0 +1,2 @@
+Command to set date in red pitaya with latest kernel build:
+date -s 2015.06.12-07:29

@@ -1,0 +1,44 @@
+     ADC has a resolution of 14 bits. With a range of -1V to +1V that gives a quantization of approx. 122 uV.
+      about 4 bits of the ADC are lost due to noise
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                      RF INPUTS:
+ 
+Input noise level: < ­119 dBm /Hz (D)
+ 
+Input impedance: 1 MΩ // 10 pF (A,B)
+ 
+Full scale voltage: 2Vpp, (46 Vpp for low­gain jumper setting) (T,V)
+ 
+gain error: < 3% (at high gain jumper setting), <10% (at low gain jumper setting)
+(G)
+
+Absolute maximum input voltage rating: 30 V (S) (1500 V ESD)
+
+○ Bandwidth: 50 MHz (3 dB)
+○ Sample rate: 125 Msps
+○ ADC resolution 14 bits
+
+
+
+                              AUXILIARY ANALOG INPUT CHANNEL:
+
+Input voltage range: 0 to +3.5 V
+○ Number of channels: 4
+○ Nominal sampling rate: 100 ksps (H)
+○ ADC resolution 12 bits
+
+
+
+
+
+Default full scale voltage: +-0.6 V (+-6 V with 10x probe attenuation). 
+Full scale reconfigurable by means of discrete components replacement (+-15V). 
