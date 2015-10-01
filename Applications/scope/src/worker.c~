@@ -931,7 +931,7 @@ int rp_osc_auto_set(rp_app_params_t *orig_params,
         orig_params[TRIG_MODE_PARAM].value  = 0;
         orig_params[MIN_GUI_PARAM].value    = 0;      
         orig_params[MAX_GUI_PARAM].value    = 130;
-        orig_params[TIME_RANGE_PARAM].value = 5;
+        orig_params[TIME_RANGE_PARAM].value = 0;
         orig_params[TRIG_SRC_PARAM].value   = 0;
         orig_params[TRIG_LEVEL_PARAM].value = 0;
         orig_params[AUTO_FLAG_PARAM].value  = 0;
@@ -1061,7 +1061,7 @@ int rp_osc_auto_set(rp_app_params_t *orig_params,
                 }
                 
                 orig_params[TRIG_MODE_PARAM].value  = 1; /* 'normal' */
-                orig_params[TIME_RANGE_PARAM].value = 5;
+                orig_params[TIME_RANGE_PARAM].value = time_range;
                 orig_params[TRIG_SRC_PARAM].value   = trig_src_ch;
                 orig_params[TRIG_LEVEL_PARAM].value = ((float)(loc_max + loc_min))/2 /
                                         (float)(1<<(c_osc_fpga_adc_bits-1));
