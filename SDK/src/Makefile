@@ -21,7 +21,7 @@ CC = $(CROSS_COMPILE)gcc
 #Flags
 CFLAGS = -g -std=gnu99 -Wall -Werror
 #Objects
-OBJECTS = TestServer.o
+OBJECTS = CreateImage.o
 #Target file
 TARGET = api_test
 
