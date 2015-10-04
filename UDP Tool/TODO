@@ -1,0 +1,8 @@
+./run.sh 192.168.1.12
+#sleep 1
+#sshpass -p root scp root@192.168.1.12:~/moy.txt ./data/
+#cd data
+#gnuplot ins
+#cp moy.txt `date +%y%m%d_%H%M%S`_echopen.data
+#cd ..
+
