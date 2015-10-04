@@ -77,11 +77,19 @@ size = (NbOfPoints,PointsPerLine)
 print size
 im = Image.new('RGB',size)
 pix = im.load()
+
 for i in range(size[0]):
     for j in range(size[1]):
 	value = abs((int(SortedTable[i][j]))-moyenne[j])
-	value = int(value **(1/2.0))
+	SortedTable[i][j] = int(value **(1/2.0))
+
+
+for i in range(size[0]):
+    for j in range(size[1]):
+	value = int(SortedTable[i][j])
         pix[i,j] = (value,value,value) 
-im.save('ima4.png')
+
+outfile = startingpoint +".png"
+im.save(outfile)
 
 	
