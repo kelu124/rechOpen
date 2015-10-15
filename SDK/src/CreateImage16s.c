@@ -19,9 +19,10 @@
 #define BUFLEN 16384  //Max length of buffer // 16*1024
 #define PORT 7536   //The port on which to listen for incoming data
 #define SWAP_UINT32(x) (((x) >> 24) | (((x) & 0x00FF0000) >> 8) | (((x) & 0x0000FF00) << 8) | ((x) << 24))
+#define nbline 32
 
-double SMAX = 0.255;
-double SMIN = -0.255;
+double SMAX = 255;
+double SMIN = -255;
 
     int tbuff, i,j  = 0;
     int CheckUDP = 0;
@@ -94,7 +95,7 @@ int main(int argc, char **argv){
 
 
 	/*number of acquision*/
-	uint32_t N = 16;
+	uint32_t N = 32;
 	int LineImage = 66;
 	/*size of the acquisition buffer*/
 	uint32_t buff_size = 16384;
@@ -110,7 +111,7 @@ int main(int argc, char **argv){
 
 		
 
-	for (int k=0; k < 50 ; k++){
+	for (int k=0; k < nbline ; k++){
 
 	float *buff = (float *)malloc(buff_size * sizeof(float));
 	int *ibuff = (int *)malloc(buff_size * sizeof(int));
@@ -131,8 +132,8 @@ int main(int argc, char **argv){
 		/*trigger source -- Channel B, Negatif*/ 
 		rp_AcqSetTriggerSrc(RP_TRIG_SRC_CHA_PE);
 		/*level of the trigger activation in volt*/
-		double PWMTriggerLevel = 0.1;
-		rp_AcqSetTriggerLevel(PWMTriggerLevel); 
+		double PWMTriggerLevel = 0.05;
+		rp_AcqSetTriggerLevel(PWMTriggerLevel);
 		/*waiting for trigger*/
 		while(1){
 			rp_AcqGetTriggerState(&stateW);
@@ -146,6 +147,7 @@ int main(int argc, char **argv){
 		for (int j = 0; j < buff_sizeW; j++){
 			buffW[j]+=tempW[j];
 		}
+		printf("%i\n", k);
 		/*release memory*/
 		free(tempW);
 		int PWM_Position = 0;
@@ -177,7 +179,7 @@ int main(int argc, char **argv){
 			rp_AcqSetTriggerSrc(RP_TRIG_SRC_CHB_NE);
 
 			/*level of the trigger activation in volt*/
-			rp_AcqSetTriggerLevel(-0.03); 
+			rp_AcqSetTriggerLevel(-0.07); 
 
 			/*acquisition trigger delay*/
 			rp_AcqSetTriggerDelay(HalfSignal);
@@ -189,13 +191,13 @@ int main(int argc, char **argv){
 					break;
 				}
 			}		
-
+			//printf("%i\n",i);
 			/*putt acquisition data in the temporary buffer*/
 			rp_AcqGetOldestDataV(RP_CH_2, &buff_size, temp);
 
 			/*additionning the N signals*/
 			for (int j = 0; j < buff_size; j++){
-				buff[j]+=temp[j];
+				buff[j]+=1000*temp[j];
 			}
 
 			/*release memory*/
@@ -207,24 +209,42 @@ int main(int argc, char **argv){
 			MoyenneFichier += buff[i];	
 		}
 		MoyenneFichier = MoyenneFichier / HalfSignal;
+		//printf("MoyenneFichier : %f\n",MoyenneFichier);
 
+		float XCarre=0.0;
+		float SCarre=0.0;
 
+		for (int i=HalfSignal ; i<buff_size ; i++) {
+			XCarre = (buff[i]-MoyenneFichier);	
+			SCarre += XCarre*XCarre;
+		}
+		SCarre = SCarre/HalfSignal;
 
+		//printf("SCarre : %f\n",SCarre);
 		/*Nettoyage et simplification du signal */
 		double ttmp = 0;
 		for (int i=0 ; i<buff_size ; i++) {
-			ttmp = (64/N)*(buff[i]- MoyenneFichier);
+			ttmp = 255*(buff[i]- MoyenneFichier)*(SCarre/100.0);
+			
 			/* Ecretage moche */
+			
+	
 			if(ttmp > (SMAX)){
 				ttmp = SMAX;
 			}
 			if(ttmp < (SMIN)){
 				ttmp = SMIN;
-			}
+			}		
+						
+			
+
+
 			/* Fin ecretage */
-			ibuff[i] = (int)((1000*ttmp));
+			ibuff[i] = ttmp;
+			//printf("%i\t",ibuff[i]);
 		}
 		free(buff);
+		
 		/* End of cleaning*/
 
 		//Sending the image
@@ -233,28 +253,31 @@ int main(int argc, char **argv){
 		int PointsNb = buff_size/sampling;
 
 		int *iToBuff = (int *)malloc(PointsNb * sizeof(int));
-		int *tmp = (int *)malloc(PointsNb * sizeof(int));
+		double *tmp = (double *)malloc(PointsNb * sizeof(double));
+
 
 		for (int i = 0 ; i < PointsNb ; ++i) {
-			tmp[i] = 0;
+			tmp[i] = 0.0;
 			for (int j = 0 ; j < sampling ; ++j) {
-		   		 tmp[i] += (int)(ibuff[i*sampling+j]*ibuff[i*sampling+j]) ;
+
+		   		 tmp[i] += (ibuff[i*sampling+j]*ibuff[i*sampling+j]) ;
 			
 			}
-			iToBuff[i] = (int)(abs((tmp[i] / sampling)));
+			iToBuff[i] = (int)(((tmp[i] / sampling)));
 			//printf("%i ", iToBuff[i]);
 		}
 		free(ibuff);
 
 
 
-		/* Checking for a file 
-		//
+		// Checking for a file 
+		/*
 		FILE * fm;
 	 	fm = fopen ("moy.txt", "w+");
 		for (int i=0 ; i<PointsNb ; i++) {
-			fprintf(fm, "%i\n", iToBuff[i]);
+			fprintf(fm, "%i\t", iToBuff[i]);
 		}
+		fprintf(fm, "\n");
 		fclose(fm);
 		*/
 
@@ -277,7 +300,8 @@ int main(int argc, char **argv){
 		printf("Number of points in the data : %i\n",samples);
 		printf("UDP Port used : %i\n",PORT);
 		printf("Packet size (in bytes) : %i\n",TaillerBuffer);
-		printf("Nb packet : %i\n",NbPackets);*/
+		printf("Nb packet : %i\n",NbPackets);
+*/
 		int DATA_Line = LineImage;
 		for (int i=0 ; i<TaillerBuffer ; i++){UDPBuffer[i]=0;}
 		for (i=0 ; i < NbPackets ; i++) { // iteration sur l'ensemble des packets du buffer
