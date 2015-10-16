@@ -19,7 +19,7 @@
 #define BUFLEN 16384  //Max length of buffer // 16*1024
 #define PORT 7536   //The port on which to listen for incoming data
 #define SWAP_UINT32(x) (((x) >> 24) | (((x) & 0x00FF0000) >> 8) | (((x) & 0x0000FF00) << 8) | ((x) << 24))
-#define nbline 2048
+#define nbline 256
 
 double SMAX = 255;
 double SMIN = -255;
@@ -65,6 +65,8 @@ int main(int argc, char **argv){
    	printf("Starting at : %i\n", LTime);
 	printf("Starting at : %i\n", LDate);
 	printf("Starting at : %i\n", LDate+LTime);*/
+	FILE * fm;
+	fm = fopen ("moy.txt", "w+");
 
 	//int PORT = 7536;
 	printf("DEBUG COMMENCE\n");
@@ -242,9 +244,12 @@ int main(int argc, char **argv){
 			/* Fin ecretage */
 			ibuff[i] = ttmp;
 			//printf("%i\t",ibuff[i]);
+			// On ecrit dans le fichier les int
+			fprintf(fm, "%i\t", (int)ibuff[i]);
 		}
 		free(buff);
-		
+		fprintf(fm, "\n");
+
 		/* End of cleaning*/
 
 		//Sending the image
@@ -272,13 +277,9 @@ int main(int argc, char **argv){
 
 		// Checking for a file 
 		
-		FILE * fm;
-	 	fm = fopen ("moy.txt", "w+");
-		for (int i=0 ; i<PointsNb ; i++) {
-			fprintf(fm, "%i\t", iToBuff[i]);
-		}
-		fprintf(fm, "\n");
-		fclose(fm);
+
+
+
 		
 
 		/* sending to UDP */
@@ -333,7 +334,7 @@ int main(int argc, char **argv){
 	usleep(2);
 	}
 	/* Release rp resources */
-
+	fclose(fm);
 	rp_Release();
 
 	return 0;
