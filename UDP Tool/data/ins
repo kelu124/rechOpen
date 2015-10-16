@@ -1,5 +1,0 @@
-plot "moy.txt" using 1
-set term png
-set output "printme.png"
-replot
-
