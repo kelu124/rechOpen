@@ -19,7 +19,7 @@
 #define BUFLEN 16384  //Max length of buffer // 16*1024
 #define PORT 7536   //The port on which to listen for incoming data
 #define SWAP_UINT32(x) (((x) >> 24) | (((x) & 0x00FF0000) >> 8) | (((x) & 0x0000FF00) << 8) | ((x) << 24))
-#define nbline 32
+#define nbline 2048
 
 double SMAX = 255;
 double SMIN = -255;
@@ -95,7 +95,7 @@ int main(int argc, char **argv){
 
 
 	/*number of acquision*/
-	uint32_t N = 32;
+	uint32_t N = 8;
 	int LineImage = 66;
 	/*size of the acquisition buffer*/
 	uint32_t buff_size = 16384;
@@ -147,7 +147,7 @@ int main(int argc, char **argv){
 		for (int j = 0; j < buff_sizeW; j++){
 			buffW[j]+=tempW[j];
 		}
-		printf("%i\n", k);
+		//printf("%i\n", k);
 		/*release memory*/
 		free(tempW);
 		int PWM_Position = 0;
@@ -156,7 +156,7 @@ int main(int argc, char **argv){
 			//printf("%f ",buffW[i]);
 		}
 		PWM_Position = PWM_Position -2000; //lowering the base, staying over max though
-		printf("PWM : %i\n",PWM_Position);
+		//printf("PWM : %i\n",PWM_Position);
 
 
 
@@ -179,7 +179,7 @@ int main(int argc, char **argv){
 			rp_AcqSetTriggerSrc(RP_TRIG_SRC_CHB_NE);
 
 			/*level of the trigger activation in volt*/
-			rp_AcqSetTriggerLevel(-0.07); 
+			rp_AcqSetTriggerLevel(0.01); 
 
 			/*acquisition trigger delay*/
 			rp_AcqSetTriggerDelay(HalfSignal);
@@ -271,7 +271,7 @@ int main(int argc, char **argv){
 
 
 		// Checking for a file 
-		/*
+		
 		FILE * fm;
 	 	fm = fopen ("moy.txt", "w+");
 		for (int i=0 ; i<PointsNb ; i++) {
@@ -279,7 +279,7 @@ int main(int argc, char **argv){
 		}
 		fprintf(fm, "\n");
 		fclose(fm);
-		*/
+		
 
 		/* sending to UDP */
 		//int DATA_Line = 0; // Number of the line in the image (ie 1 to 40 in our case)
@@ -301,7 +301,9 @@ int main(int argc, char **argv){
 		printf("UDP Port used : %i\n",PORT);
 		printf("Packet size (in bytes) : %i\n",TaillerBuffer);
 		printf("Nb packet : %i\n",NbPackets);
+		
 */
+		printf("Ligne k : %i\n",k);
 		int DATA_Line = LineImage;
 		for (int i=0 ; i<TaillerBuffer ; i++){UDPBuffer[i]=0;}
 		for (i=0 ; i < NbPackets ; i++) { // iteration sur l'ensemble des packets du buffer
@@ -328,7 +330,7 @@ int main(int argc, char **argv){
 		/* end of emission */
 	free(iToBuff);
 	free(tmp);
-	usleep(2000);
+	usleep(2);
 	}
 	/* Release rp resources */
 
