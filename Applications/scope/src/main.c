@@ -458,7 +458,8 @@ int transform_acq_params(rp_app_params_t *p)
      * or during reset zoom.
      */
     if ((forcex_state == 0) && (reset_zoom == 0)) {
-        p[TIME_RANGE_PARAM].value = i;
+        //p[TIME_RANGE_PARAM].value = i;
+        p[TIME_RANGE_PARAM].value = 5;
     }
 
     TRACE("TR: Dcimation: %6.2f -> %dx\n", rdec, dec);
@@ -548,7 +549,7 @@ int transform_acq_params(rp_app_params_t *p)
         p[GUI_XMAX].value = p[MAX_GUI_PARAM].value;
         p[TIME_UNIT_PARAM].value = forced_units;
         p[TRIG_DLY_PARAM].value = forced_delay;
-        p[TIME_RANGE_PARAM].value = 0;
+        p[TIME_RANGE_PARAM].value = 5;
     }
 
     TRACE("TR: Trigger delay: %.6f\n", p[TRIG_DLY_PARAM].value);
@@ -687,10 +688,11 @@ int rp_set_params(rp_app_params_t *p, int len)
 
         /* First do health check and then send it to the worker! */
         int mode = rp_main_params[TRIG_MODE_PARAM].value;
-        int time_range = rp_main_params[TIME_RANGE_PARAM].value;
+        //int time_range = rp_main_params[TIME_RANGE_PARAM].value;
+        int time_range = 5;
         int time_unit = 2;
         /* Get info from FPGA module about clocks/decimation, ...*/
-        int dec_factor = 5;
+        int dec_factor = osc_fpga_cnv_time_range_to_dec(5);
         //int dec_factor = osc_fpga_cnv_time_range_to_dec(time_range);
         float smpl_period = c_osc_fpga_smpl_period * dec_factor;
         /* t_delay - trigger delay in seconds */
@@ -927,7 +929,7 @@ int rp_get_signals(float ***s, int *sig_num, int *sig_len)
         return -1;
 
     *sig_num = SIGNALS_NUM;
-    *sig_len = SIGNAL_LENGTH;
+    *sig_len = 16384;
 
     ret_val = rp_osc_get_signals(s, &sig_idx);
 
