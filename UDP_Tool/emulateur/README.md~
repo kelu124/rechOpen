@@ -31,7 +31,7 @@ Data files are listed here. There's a full image, for lengthy runs, and a smalle
 * To check the integrity of this, run python LogParser LOGFILENAME to check if that rebuilds the image.. Success !
 
 ## Sending data to another computer/mobile on your local network
-If you want to send the data or to stream the packets to another device, just change the IP from a _localhost_ IP to the IP of your choice =)
+If you want to send the data or to stream the packets to another device, just change the IP from a _localhost_ IP to the 
 
 ## Some resources
 
