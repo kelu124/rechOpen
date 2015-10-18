@@ -4,11 +4,9 @@ After a couple of issues with the Red Pitaya web app, we have tried to set up a 
 
 The first trials were done with '''/srcTestServer.c''' -- but we were still quite buggy, especially in terms of memory management, which proved quite tricky for a C n00b like me.
 
-Moreover, I think that the UDP data rate, at least with the Pitaya, are note quite compatible with the data rate in terms of raw images. The time being, I rather focused on delivering an image.
-
-| ![A big pulse from the wall](https://github.com/kelu124/rechOpen/blob/master/UDP%20Tool/data/20151004-190413_UDP-DATA.log.png)
- | ![A ... phantom ?](https://github.com/kelu124/rechOpen/blob/master/UDP%20Tool/data/20151004-185810_UDP-DATA.log.png) |
-|------|------|
+Moreover, I think that the UDP data rate, at least with the Pitaya, are note quite compatible with the data rate in terms of raw images. The time being, I rather focused on delivering an image
+| ![A big pulse from the wall](https://github.com/kelu124/rechOpen/blob/master/UDP_Tool/data/20151004-190413_UDP-DATA.log.png)
+ ![A ... phantom ?](https://github.com/kelu124/rechOpen/blob/master/UDP_Tool/data/20151004-185810_UDP-DATA.log.png) 
 
 
 
